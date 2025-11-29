@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Messenger 2030 | Advanced Facebook Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ff88;
+            font-family: 'Courier New', 'Monaco', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #a0ffa0;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00ff88, 0 0 30px #00ff88; }
+            to { text-shadow: 0 0 30px #00ccff, 0 0 40px #00ccff; }
+        }
+
+        .status-panel {
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #00ff88;
+            text-align: center;
+        }
+
+        .status-item.ready {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+        }
+
+        .status-item.warning {
+            background: rgba(255, 165, 0, 0.2);
+            border-color: #ffa500;
+        }
+
+        .status-item.error {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff4444;
+        }
+
+        .input-section {
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #00ccff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            color: #00ccff;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #a0ffa0;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        textarea, input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(10, 10, 20, 0.9);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #00ccff;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+        }
+
+        textarea {
+            min-height: 100px;
+        }
+
+        .file-input {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px dashed #00ff88;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input:hover {
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            color: #000;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.stop {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+        }
+
+        .logs-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tasks-panel {
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid #ffa500;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .task-item {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .task-info {
+            flex-grow: 1;
+        }
+
+        .task-progress {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            height: 10px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: rgba(0, 255, 136, 0.9);
+            color: #000;
+            font-weight: bold;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: rgba(255, 0, 0, 0.9);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5em; }
+            .status-grid { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 NEURAL MESSENGER 2030</h1>
+            <p>Advanced Facebook Messenger Automation Platform</p>
+        </div>
+
+        <div class="status-panel">
+            <h2 class="section-title">🖥️ SYSTEM STATUS</h2>
+            <div class="status-grid" id="statusGrid">
+                <!-- Status will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="input-section">
+            <h2 class="section-title">🔧 MISSION CONTROL</h2>
+            
+            <div class="input-group">
+                <label>🔑 FACEBOOK COOKIES</label>
+                <textarea id="cookiesInput" placeholder="Paste cookies in any format:
+- Raw: c_user=1234567890; xs=abc123...
+- JSON: [{'name':'c_user','value':'1234567890'},...]
+- Browser export format"></textarea>
+                <p style="color: #888; font-size: 0.9em; margin-top: 5px;">
+                    Or upload file: <input type="file" id="cookiesFile" accept=".txt,.json">
+                </p>
+            </div>
+
+            <div class="input-group">
+                <label>📝 MESSAGES TO SEND</label>
+                <textarea id="messagesInput" placeholder="Enter messages (one per line):
+Hello! 👋
+How are you today? 😊
+Check this out! 🚀"></textarea>
+                <p style="color: #888; font-size: 0.9em; margin-top: 5px;">
+                    Or upload file: <input type="file" id="messagesFile" accept=".txt">
+                </p>
+            </div>
+
+            <div class="input-group">
+                <label>💬 CONVERSATION IDs</label>
+                <input type="text" id="conversationsInput" placeholder="Enter conversation IDs (comma separated): 1000123456789, 1000987654321">
+                <p style="color: #888; font-size: 0.9em; margin-top: 5px;">
+                    Or upload file: <input type="file" id="conversationsFile" accept=".txt">
+                </p>
+            </div>
+
+            <button class="btn" onclick="startMission()">🚀 LAUNCH MISSION</button>
+            <button class="btn stop" onclick="stopAllMissions()">🛑 EMERGENCY STOP</button>
+        </div>
+
+        <div class="tasks-panel">
+            <h2 class="section-title">📊 ACTIVE MISSIONS</h2>
+            <div id="tasksList">
+                <!-- Tasks will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="logs-panel">
+            <h2 class="section-title">📡 LIVE LOGS</h2>
+            <div id="logsContainer">
+                <!-- Logs will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // DOM elements
+        const statusGrid = document.getElementById('statusGrid');
+        const tasksList = document.getElementById('tasksList');
+        const logsContainer = document.getElementById('logsContainer');
+        const notification = document.getElementById('notification');
+
+        // Show notification
+        function showNotification(message, isError = false) {
+            notification.textContent = message;
+            notification.className = `notification ${isError ? 'error' : ''} show`;
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Update system status
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                statusGrid.innerHTML = `
+                    <div class="status-item ${data.playwright ? 'ready' : 'error'}">
+                        <div>🎭 PLAYWRIGHT</div>
+                        <div>${data.playwright ? '✅ READY' : '❌ MISSING'}</div>
+                    </div>
+                    <div class="status-item ${data.browser ? 'ready' : 'error'}">
+                        <div>🌐 CHROMIUM</div>
+                        <div>${data.browser ? '✅ READY' : '❌ MISSING'}</div>
+                    </div>
+                    <div class="status-item ${data.active_tasks > 0 ? 'ready' : ''}">
+                        <div>🚀 ACTIVE TASKS</div>
+                        <div>${data.active_tasks}</div>
+                    </div>
+                    <div class="status-item">
+                        <div>📊 TOTAL TASKS</div>
+                        <div>${data.total_tasks}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Status update error:', error);
+            }
+        }
+
+        // Update tasks list
+        async function updateTasks() {
+            try {
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                if (data.tasks.length === 0) {
+                    tasksList.innerHTML = '<div style="text-align: center; color: #888; padding: 20px;">No active missions</div>';
+                    return;
+                }
+                
+                tasksList.innerHTML = data.tasks.map(task => `
+                    <div class="task-item">
+                        <div class="task-info">
+                            <strong>${task.id}</strong>
+                            <div>Status: ${task.active ? '🟢 RUNNING' : '🔴 STOPPED'}</div>
+                            <div>Progress: ${task.success_count}/${task.total_count}</div>
+                            <div class="task-progress">
+                                <div class="progress-bar" style="width: ${task.progress}%"></div>
+                            </div>
+                        </div>
+                        ${task.active ? `<button class="btn stop" onclick="stopTask('${task.id}')">STOP</button>` : ''}
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Tasks update error:', error);
+            }
+        }
+
+        // Update logs
+        async function updateLogs() {
+            try {
+                const response = await fetch('/api/logs');
+                const data = await response.json();
+                
+                logsContainer.innerHTML = data.logs.map(log => 
+                    `<div class="log-entry">${log}</div>`
+                ).join('');
+                
+                // Auto-scroll to bottom
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+            } catch (error) {
+                console.error('Logs update error:', error);
+            }
+        }
+
+        // Start mission
+        async function startMission() {
+            const cookies = document.getElementById('cookiesInput').value;
+            const messages = document.getElementById('messagesInput').value;
+            const conversations = document.getElementById('conversationsInput').value;
+            
+            if (!cookies && !document.getElementById('cookiesFile').files.length) {
+                showNotification('❌ Please provide cookies', true);
+                return;
+            }
+            
+            if (!messages && !document.getElementById('messagesFile').files.length) {
+                showNotification('❌ Please provide messages', true);
+                return;
+            }
+            
+            if (!conversations && !document.getElementById('conversationsFile').files.length) {
+                showNotification('❌ Please provide conversation IDs', true);
+                return;
+            }
+            
+            const formData = new FormData();
+            if (cookies) formData.append('cookies', cookies);
+            if (messages) formData.append('messages', messages);
+            if (conversations) formData.append('conversations', conversations);
+            
+            // Add files
+            const cookiesFile = document.getElementById('cookiesFile').files[0];
+            const messagesFile = document.getElementById('messagesFile').files[0];
+            const conversationsFile = document.getElementById('conversationsFile').files[0];
+            
+            if (cookiesFile) formData.append('cookies_file', cookiesFile);
+            if (messagesFile) formData.append('messages_file', messagesFile);
+            if (conversationsFile) formData.append('conversations_file', conversationsFile);
+            
+            try {
+                const response = await fetch('/api/start', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    showNotification(`✅ ${result.message}`);
+                } else {
+                    showNotification(`❌ ${result.message}`, true);
+                }
+            } catch (error) {
+                showNotification('❌ Network error', true);
+                console.error('Start mission error:', error);
+            }
+        }
+
+        // Stop task
+        async function stopTask(taskId) {
+            try {
+                const response = await fetch(`/api/stop/${taskId}`, { method: 'POST' });
+                const result = await response.json();
+                showNotification(result.message);
+            } catch (error) {
+                showNotification('❌ Error stopping task', true);
+            }
+        }
+
+        // Stop all missions
+        async function stopAllMissions() {
+            try {
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                for (const task of data.tasks) {
+                    if (task.active) {
+                        await fetch(`/api/stop/${task.id}`, { method: 'POST' });
+                    }
+                }
+                
+                showNotification('🛑 All missions stopped');
+            } catch (error) {
+                showNotification('❌ Error stopping missions', true);
+            }
+        }
+
+        // Initialize auto-updates
+        setInterval(updateStatus, 2000);
+        setInterval(updateTasks, 3000);
+        setInterval(updateLogs, 1500);
+        
+        // Initial load
+        updateStatus();
+        updateTasks();
+        updateLogs();
+
+        // File input handlers
+        document.getElementById('cookiesFile').addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                document.getElementById('cookiesInput').placeholder = `Using file: ${this.files[0].name}`;
+            }
+        });
+
+        document.getElementById('messagesFile').addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                document.getElementById('messagesInput').placeholder = `Using file: ${this.files[0].name}`;
+            }
+        });
+
+        document.getElementById('conversationsFile').addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                document.getElementById('conversationsInput').placeholder = `Using file: ${this.files[0].name}`;
+            }
+        });
+    </script>
+</body>
+                  </html>
